@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CALCULATOR 3</title>
+<link rel="stylesheet" type="text/css" href="MyCalculator.css">
+<script>
+	
+var firstvalue=0;
+var secondvalue=0;
+var firstNumber="";
+var secondNumber="";
+var tempvalue=0;
+var disp="";
+var values=0;
+var newOper="";
+var operator=[];
+var operate=[];
+var tempOper=[];
+var equalCount=0;
+var count=0;
+var counts=0;
+var i=0;
+var separator="";
+
+function numberDisplay(num)
+{
+	if(firstvalue!=null&&firstvalue!=0&&tempOper!=null&&tempOper!="")
+	{	
+		separator="";
+		document.getElementById("area").value+=	num;
+		separator=separate(document.getElementById("area").value);
+		document.getElementById("area").value=separator;
+		secondvalue=Number(separator.replaceAll(",",""));
+		document.getElementById("area1").value+=num;	
+		disp=document.getElementById("area1").value;
+		operate="";	
+	}
+		
+	else
+	{
+		document.getElementById("area").value+=	num;
+		separator=separate(document.getElementById("area").value);
+		document.getElementById("area").value=separator;
+		firstvalue=Number(separator.replaceAll(",",""));
+		document.getElementById("area1").value+=num;
+		disp=document.getElementById("area1").value;
+	}
+	if(equalCount>10&&(tempOper!=null&&tempOper!=""))
+	{
+		document.getElementById("area").value+=tempvalue;
+		document.getElementById("area").value+=	num;
+		firstvalue=Number(document.getElementById("area").value);
+	}	
+}
+function separate(num)
+{
+	var firstSymbol="";
+	if(num.includes("-"))
+	{
+		alert("inside");
+		var index=num.indexOf(".");
+		//	alert(index);
+			firstSymbol=num.substring(0,1);
+			var firstString=num.substring(1,index);
+//			alert(firstString);
+			var lastString=num.substring(index,num.length);
+//			alert(lastString);
+			var temp=firstString.replaceAll(",","");
+			var numbers=Number(temp);
+			var newNumber="";
+			if(numbers>999)
+			{
+				
+				var arr=[];	
+				arr=temp.split("");
+				var count=0;
+				var length=arr.length;
+				var lastDigit=arr[length-1];
+				
+				
+				for(var i=length-2;i>=0;i--)
+				{
+					newNumber=arr[i]+newNumber;
+					
+					if(count==1 && i!=0)
+					{
+						newNumber=","+newNumber;
+						count=0;
+					}
+					else
+					{
+						count++;
+					}	
+				}
+				newNumber=firstSymbol+newNumber+lastDigit+lastString;
+				
+				
+			}
+			else
+			{
+				return num;
+			}	
+			return newNumber;
+	}	
+	if(num.includes("."))
+	{
+		var index=num.indexOf(".");
+	//	alert(index);
+		
+		var firstString=num.substring(1,index);
+//		alert(firstString);
+		var lastString=num.substring(index,num.length);
+//		alert(lastString);
+		var temp=firstString.replaceAll(",","");
+		var numbers=Number(temp);
+		var newNumber="";
+		if(numbers>999)
+		{
+			
+			var arr=[];	
+			arr=temp.split("");
+			var count=0;
+			var length=arr.length;
+			var lastDigit=arr[length-1];
+			
+			
+			for(var i=length-2;i>=0;i--)
+			{
+				newNumber=arr[i]+newNumber;
+				
+				if(count==1 && i!=0)
+				{
+					newNumber=","+newNumber;
+					count=0;
+				}
+				else
+				{
+					count++;
+				}	
+			}
+			newNumber=firstSymbol+newNumber+lastDigit+lastString;
+			
+			
+		}
+		else
+		{
+			return num;
+		}	
+		return newNumber;
+	}	
+	else
+	{	
+	var temp=num.replaceAll(",","");
+	var numbers=Number(temp);
+	var newNumber="";
+	if(numbers>999)
+	{
+		
+		var arr=[];	
+		arr=temp.split("");
+		var count=0;
+		var length=arr.length;
+		var lastDigit=arr[length-1];
+		
+		
+		for(var i=length-2;i>=0;i--)
+		{
+			newNumber=arr[i]+newNumber;
+			
+			if(count==1 && i!=0)
+			{
+				newNumber=","+newNumber;
+				count=0;
+			}
+			else
+			{
+				count++;
+			}	
+		}
+		newNumber=newNumber+lastDigit;
+		
+		
+	}
+	else
+	{
+		return num;
+	}	
+	return newNumber;
+	}
+}
+
+function operations(operate)
+{
+	counts++;
+	if(firstvalue!=0&&operate=="+"||secondvalue!=0&&firstvalue!=0&&operate=="-+"||secondvalue!=0&&operate=="++")
+	{
+		if(secondvalue==0&&counts==1)
+		{	
+			values=firstvalue+secondvalue;
+	//		alert(values);
+			firstvalue=values;
+		}
+			values=0;
+//			alert(firstvalue);
+//			alert(secondvalue);
+			values=firstvalue+secondvalue;
+			firstvalue=values;
+		//	alert(values);
+			return values;
+
+		
+	}
+
+	if(firstvalue!=0&&operate=="-"||secondvalue!=0&&operate=="--"||secondvalue!=0&&operate=="+-")
+	{
+		var c=0;
+		c++;
+		if(firstvalue>0&&secondvalue==0&&counts==1)
+		{
+			values=0;
+			values=values+firstvalue;
+			//alert(values);
+			firstvalue=values;
+		}
+	
+		if(secondvalue<0&&c==1)
+		{
+			
+			values=0;
+			firstvalue=values;
+			//alert(values);
+		}
+		if(secondvalue<0&&count>1||firstvalue>0&&secondvalue<0)
+		{	
+			//alert("firstvalue"+ firstvalue);
+			//alert("secondvalue"+ secondvalue);
+			values=firstvalue-secondvalue;
+			firstvalue=values;
+			//alert(values);
+			//alert(firstvalue);
+			return values;
+		}	
+			
+		else
+		{	
+			values=0;
+			values=firstvalue-secondvalue;
+			firstvalue=values;
+			return values;	
+		}	
+	}
+	if(firstvalue!=0&&operate=="*"||secondvalue!=0&&operate=="*-"||secondvalue!=0&&operate=="-*"||secondvalue!=0&&operate=="+*"||secondvalue!=0&&operate=="/*"||secondvalue!=0&&operate=="*+")
+	{
+		if(secondvalue==0||counts==1||equalCount>0)
+		{
+	//		alert(counts);
+			values=1;
+			values*=firstvalue;
+			firstvalue=values;
+//			alert(values);
+		}	
+		
+		if(operate[1]=='-'&&counts>1)
+		{	
+//			alert(counts);
+			values=firstvalue*(-secondvalue);
+			firstvalue=values;
+			return values;
+		}
+		if(!operate[1]&&counts>1||operate[1]=='*'&&counts>1||operate[1]=='+'&&counts>1)
+		{
+			values=firstvalue*secondvalue;
+			firstvalue=values;
+			return values;
+		}
+	}
+	if(firstvalue!=0&&operate=="/"||secondvalue!=0&&operate=="/-"||secondvalue!=0&&operate=="*/"||secondvalue!=0&&operate=="+/"||secondvalue!=0&&operate=="-/"||secondvalue!=0&&operate=="/+")
+	{
+		if(secondvalue==0&&counts==1)
+		{
+			values=1;
+			values*=firstvalue;	
+			firstvalue=values;
+//			alert("value"+values);
+		}	
+//		alert(firstvalue);
+		if(operate[1]=='-')
+		{
+//			alert(firstvalue);
+//			alert(secondvalue);
+			values=firstvalue/(-secondvalue);
+			firstvalue=values;
+	//		alert(values);
+			return values;
+		}
+		
+		if(!tempOper[1]||tempOper[1]=='/'||tempOper[1]=='+')
+		{
+	//		alert(firstvalue);
+	//		alert(secondvalue);
+			values=firstvalue/secondvalue;
+			firstvalue=values;
+	//		alert(values);
+			return values;
+		}	
+	}
+}
+	
+function getOperator(oper)
+{
+	i++;
+	document.getElementById("area").value="";
+	operate+=document.getElementById(oper).value;
+	document.getElementById("area1").value+=operate[operate.length-1];
+	disp=document.getElementById("area1").value;
+	tempOper=operate;
+	if(operate[0]=='+'&&operate[1]=='-')
+	{
+		document.getElementById("area").value+=	operate[1];
+		document.getElementById(operator).style.backgroundColor="rgb(180,150,200)";
+		document.getElementById(operator).addEventListener("mouseout",function(){
+			document.getElementById(operator).style.backgroundColor="rgb(180,150,200)";
+		});
+		document.getElementById(operator).addEventListener("mouseover",function(){
+			document.getElementById(operator).style.backgroundColor="grey";
+		});
+		tempOper="";
+		tempOper=operate[operate.length-1];
+//		alert(tempOper);
+	}
+	if(firstvalue>0||firstvalue<0||firstvalue==0)
+	{	
+		document.getElementById(oper).style.backgroundColor="red";
+		operator=oper;
+		clean();
+	}
+	if(firstvalue==0&&operate=="-")
+	{
+		//alert(operate);
+		document.getElementById("area").value+=operate;
+	}
+	if(operate[1]=='-')
+	{
+		
+		document.getElementById("area").value=	operate[1];
+		seconddisp=document.getElementById("area").value;
+	}
+	
+	
+	if(operate.length>1)
+	{
+		tempvalue=operations(operate);
+		operator=tempOper;
+	}	
+
+	if(secondvalue!=0)
+	{	
+		count++;
+		if(count>0)
+		{	
+//			alert(count);
+//			alert(operator);
+			tempvalue=operations(newOper);
+			operator=tempOper;
+			document.getElementById(newOper).style.backgroundColor="white";
+			document.getElementById(newOper).addEventListener("mouseout",function(){
+				document.getElementById(newOper).style.backgroundColor="white";
+			});
+			document.getElementById(newOper).addEventListener("mouseover",function(){
+				document.getElementById(newOper).style.backgroundColor="grey";
+			});
+			document.getElementById(operator).style.backgroundColor="red";
+		}
+		
+		/*if(count>1)
+		{
+			tempvalue=operations(operator);
+			operator=tempOper;
+		}	*/
+	}
+	
+	if(!document.getElementById("equal").onclick)
+	{
+		while(true)
+		{	
+			document.getElementById(oper).style.backgroundColor="red";
+		}	
+	}
+	
+	if(operate[0]=='-'&&operate[1]=='+'||operate[0]=='*'&&operate[1]=='/'||operate[0]=='/'&&operate[1]=='*')
+	{
+		document.getElementById(newOper).style.backgroundColor="white";
+		document.getElementById(newOper).addEventListener("mouseout",function(){
+			document.getElementById(newOper).style.backgroundColor="white";
+		});
+		document.getElementById(newOper).addEventListener("mouseover",function(){
+			document.getElementById(newOper).style.backgroundColor="grey";
+		});
+		document.getElementById(operator).style.backgroundColor="red";
+	}
+	if(operate[0]=='*'&&operate[1]=='+'||operate[0]=='/'&&operate[1]=='+')
+	{
+		document.getElementById(newOper).style.backgroundColor="white";
+		document.getElementById(newOper).addEventListener("mouseout",function(){
+			document.getElementById(newOper).style.backgroundColor="white";
+		});
+		document.getElementById(newOper).addEventListener("mouseover",function(){
+			document.getElementById(newOper).style.backgroundColor="grey";
+		});
+		document.getElementById(operator).style.backgroundColor="red";	
+	}
+	if(operate[0]=='-'&&operate[1]=='-')
+	{
+		document.getElementById("area").value=	operate[1];
+	}
+	if(secondvalue==0||i==1)
+	{
+		tempvalue=operations(tempOper);
+		document.getElementById(operate).style.backgroundColor="white";
+		document.getElementById(operate).addEventListener("mouseout",function(){
+			document.getElementById(operate).style.backgroundColor="white";
+		});
+		document.getElementById(operate).addEventListener("mouseover",function(){
+			document.getElementById(operate).style.backgroundColor="grey";
+		});
+		operator=tempOper;
+		
+	}
+	if(operate[0]=='+'&&operate[1]=='+')
+	{
+		clean();
+	}
+	if(i>1&&operate[1]!='-')
+	{
+		operating=operate.length;
+		for(var j=0;j<operating-1;j++)
+		{	
+		document.getElementById(newOper).style.backgroundColor="white";
+		document.getElementById(newOper).addEventListener("mouseout",function(){
+			document.getElementById(newOper).style.backgroundColor="white";
+		});
+		document.getElementById(newOper).addEventListener("mouseover",function(){
+			document.getElementById(newOper).style.backgroundColor="grey";
+		});
+		}
+		document.getElementById(operator).style.backgroundColor="red";
+		tempOper=operate[operating-1];
+	}
+	
+	
+	if(operate[0]=='+'&&operate[1]=='*'||operate[0]=='-'&&operate[1]=='*'||operate[0]=='+'&&operate[1]=='/'||operate[0]=='-'&&operate[1]=='/')
+	{
+		document.getElementById(newOper).style.backgroundColor="white";
+		document.getElementById(newOper).addEventListener("mouseout",function(){
+			document.getElementById(newOper).style.backgroundColor="white";
+		});
+		document.getElementById(newOper).addEventListener("mouseover",function(){
+			document.getElementById(newOper).style.backgroundColor="grey";
+		});
+		document.getElementById(operator).style.backgroundColor="red";
+	}
+	
+	newOper=operate;	
+}
+function negativeOperator(oper)
+{
+		
+}
+function equals(value)
+{
+//	alert("equal "+tempOper);
+	equalCount++;
+	tempvalue=operations(tempOper);
+	document.getElementById(tempOper[0]).style.backgroundColor="white";
+	document.getElementById(tempOper[0]).addEventListener("mouseout",function(){
+		document.getElementById(tempOper[0]).style.backgroundColor="white";
+	});
+	document.getElementById(tempOper[0]).addEventListener("mouseover",function(){
+		document.getElementById(tempOper[0]).style.backgroundColor="grey";
+	});
+	document.getElementById(tempOper[0]).addEventListener("click",function(){
+		document.getElementById(tempOper[0]).style.backgroundColor="red";
+		document.getElementById(tempOper[0]).addEventListener("mouseout",function(){
+			document.getElementById(tempOper[0]).style.backgroundColor="red";
+		});
+	});
+	if(tempOper[1])
+	{	
+		for(i=0;i<tempOper.length;i++)
+		{	
+		document.getElementById(tempOper[i]).style.backgroundColor="white";
+	document.getElementById(tempOper[i]).addEventListener("mouseout",function(){
+		document.getElementById(tempOper[i]).style.backgroundColor="white";
+	});
+	document.getElementById(tempOper[i]).addEventListener("mouseover",function(){
+		document.getElementById(tempOper[i]).style.backgroundColor="grey";
+	});
+	document.getElementById(tempOper[i]).addEventListener("click",function(){
+		document.getElementById(tempOper[i]).style.backgroundColor="red";
+		document.getElementById(tempOper[i]).addEventListener("mouseout",function(){
+			document.getElementById(tempOper[i]).style.backgroundColor="red";
+		});
+	});
+	}
+	}
+
+	
+	switch(tempOper)
+	{
+	
+		case '+': case '+-': case '-+': case '++':
+
+			document.getElementById("area").value="";
+			disp="";
+			document.getElementById("area1").value="";
+			document.getElementById("area1").value+=tempvalue;
+			disp=document.getElementById("area1").value;
+			var add=separate(String(tempvalue));
+			document.getElementById("area").value=add;
+			
+	//		alert("eq first"+firstvalue);
+			secondvalue=0;
+			counts=0;
+			operate="";
+			tempOper="";
+			break;
+			
+		case '-': case '--':
+
+			disp="";
+			document.getElementById("area1").value="";
+			document.getElementById("area1").value+=tempvalue;
+			disp=document.getElementById("area1").value;
+			document.getElementById("area").value="";
+			var sub=separate(String(tempvalue));
+			document.getElementById("area").value=sub;
+
+			secondvalue=0;
+			counts=0;
+			operate="";
+			tempOper="";
+			break;
+			
+		case'*': case '+*': case '-*': case '/*': case '*+': case '*-':
+			
+			if(!tempOper[1]||tempOper[1]=='*'||tempOper[1]=='+'||tempOper[0]=='*')
+			{	
+				disp="";
+				document.getElementById("area1").value="";
+				document.getElementById("area1").value+=tempvalue;
+				disp=document.getElementById("area1").value;
+				document.getElementById("area").value="";
+				document.getElementById("area").value=tempvalue;
+				secondvalue=1;
+				counts=0;
+				operate="";
+				break;
+			}
+			if(tempOper[1]=='-')
+			{	
+				disp="";
+				document.getElementById("area1").value="";
+				document.getElementById("area1").value+=tempvalue;
+				disp=document.getElementById("area1").value;
+				document.getElementById("area").value="";
+				document.getElementById("area").value=tempvalue;
+				secondvalue=1;
+				counts=0;
+				operate="";
+				break;
+			}
+			
+		case '/': case '+/': case '-/': case '*/': case '/+': case '/-':
+			
+			if(!tempOper[1]||tempOper[1]=='/'||tempOper[1]=='+')
+			{	
+				alert(tempOper);
+				disp="";
+				document.getElementById("area1").value="";
+				document.getElementById("area1").value+=tempvalue;
+				disp=document.getElementById("area1").value;
+				document.getElementById("area").value="";
+				document.getElementById("area").value=tempvalue;
+				secondvalue=1;
+				counts=0;
+				operate="";
+				tempOper="";
+				break;
+			}
+			if(tempOper[1]=='-')
+			{	
+				disp="";
+				document.getElementById("area1").value="";
+				document.getElementById("area1").value+=tempvalue;
+				disp=document.getElementById("area1").value;
+				document.getElementById("area").value="";
+				document.getElementById("area").value=tempvalue;
+				secondvalue=1;
+				operate="";
+				tempOper="";
+				counts=0;
+				break;
+			}
+	}	
+}
+function clean()
+{
+	document.getElementById("area").value="";
+	//document.getElementsByTagName("button").style.backgroundColor="(180,150,200)";
+}	
+
+</script>
+<style>
+#area1,#area
+{
+	border-style:none; 
+	background-color:white;
+	color:black;
+}
+</style>
+</head>
+<body style="background-color:rgb(100,100,100);">
+    <center ><h1 style="margin-top:250px;">CALCULATOR 3</h1></center>
+	<div class="main">
+		<div class="sub" style="background-color:black;">
+			<right><input type="text" rows="" size="46" id="area1"  readOnly style="font-size:20px;" ><right>
+			<right><input type="text" rows="" size="31" id="area"  readOnly style="font-size:30px;"  ><right><br>
+			
+		</div><br>
+		<div>
+		
+			<button onclick="numberDisplay(1)" id="1" value="1">1</button>
+			<button onclick="numberDisplay(2)" class="rowOne" id="2" value="2">2</button>
+			<button onclick="numberDisplay(3)" class="rowOne" id="3"value="3">3</button>
+			<button onclick="clean()" class="rowOne" id="clear">C</button>
+			&nbsp&nbsp<button onclick="numberDisplay('(')"class="rowOne" id="(" value="(">(</button>
+		</div><br>
+		<div>
+			<button onclick="numberDisplay(4)" id="4" value="4">4</button>
+			<button onclick="numberDisplay(5)" class="rowOne" id="5" value="5">5</button>
+			<button onclick="numberDisplay(6)" class="rowOne" id="6" value="6">6</button>
+			<button  onclick="getOperator('+')" class="rowOne" id="+" value="+">+</button>
+			&nbsp&nbsp&nbsp<button onclick="numberDisplay('.')" style="padding:25px;" class="rowOne" id="." value=".">.</button>
+		</div><br>
+		<div>
+			<button onclick="numberDisplay(7)" id="7" value="7">7</button>
+			<button onclick="numberDisplay(8)" class="rowOne" id="8" value="8">8</button>
+			<button onclick="numberDisplay(9)" class="rowOne" id="9" value="9">9</button>
+			<button onclick="getOperator('-')"class="rowOne" id="-" value="-">-</button>
+			&nbsp&nbsp&nbsp&nbsp<button onclick="numberDisplay(')')"class="rowOne" id=")" value=")">)</button>
+		</div>
+		<div><br>
+			<button onclick="getOperator('/')" id="/" value="/">/</button>
+			<button onclick="numberDisplay(0)" class="rowOne" id="0" value="0">0</button>
+			<button onclick="getOperator('*')" class="rowOne" id="*" value="*">*</button>
+			<button class="rowOne" id="percent">%</button>
+			&nbsp&nbsp&nbsp&nbsp<button onclick="equals(1)" class="rowOne" id="equal" value="=">=</button>
+		</div>
+	</div>
+</body>
+</html>

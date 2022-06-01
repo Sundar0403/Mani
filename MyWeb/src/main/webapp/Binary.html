@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>BINARY</title>
+<style>
+div
+{
+	margin-left:600px;
+	margin-top:400px;
+	padding:20px;
+	height:200px;
+	width:250px;
+	background-color:rgb(200,200,200);
+}
+button
+{
+	background-color:white;
+	padding:10px;
+	color:black;
+}
+</style>
+<script>
+function binary()
+{
+	var value=document.getElementById("bin").value;
+	var binary=0,remainder=0;
+	var temp=value;
+	var i=1;
+	while(value>0)
+	{
+		remainder=value%2;
+		binary=binary+remainder*i;
+		i=i*10;
+		value=Math.floor(value/2);
+	}
+	document.getElementById("binary").innerHTML="Binary of Given Value : "+temp+" is "+binary;
+}
+</script>
+</head>
+<body>
+	<div>
+	Enter The Number to Find Binary:<br><input type="text" id="bin"><br><br>
+	<button onclick="binary()">Click Here</button>
+	<p id="binary"></p>
+	</div>
+</body>
+</html>
